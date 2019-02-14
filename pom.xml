@@ -10,7 +10,6 @@
         <module>spring-cloud-finchley-parent</module>
     </modules>
     <properties>
-        <tag.url>https://github.com/nickzxing/spring-cloud-master/tags</tag.url>
     </properties>
     <build>
         <plugins>
