@@ -1,0 +1,46 @@
+spring:
+  application:
+#    由于logback-spring.xml的加载在application.yml之前bootstrap.xml之后
+#    所以当logback需要读取配置文件中的属性时，应该将这些属性配置在bootstrap.yml中
+    name: micro-service-user
+  cloud:
+
+#########################################################################################################################
+############################################# Config Configuration Begin ################################################
+    config:
+#      对应config server所获取的配置文件的{profile}，（default、dev、prod）
+      profile:
+#      仓库分支
+      label: master
+#      对应config server所获取的配置文件的{application}，使用逗号分隔可加载多个配置文件
+      name: common,eureka
+#      通过Eureka服务实例名查找config server
+      discovery:
+        enabled: true
+        service-id: config-server
+############################################# Config Configuration End ##################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Eureka Configuration Begin ################################################
+eureka:
+  client:
+    service-url:
+#      配置Eureka服务端地址并注册，若服务端是高可用环境，需要配置多个服务端地址并使用逗号分隔
+      defaultZone: http://eureka:123456@localhost:8761/eureka/
+    healthcheck:
+#    增加actuator健康检查，需要引入actuator依赖
+      enabled: true
+  instance:
+#    配置Eureka客户端实例ID，这里设置为ip:port
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+#    是否使用IP设置hostName属性
+#    prefer-ip-address: true
+#    状态页面的URL，相对路径，默认使用HTTP访问，如果需要使用HTTPS则需要使用绝对路径配置（eureka.instance.status-page-url）
+#    status-page-url-path: /
+#    配置Eureka客户端实例发送给Eureka服务端的心跳频率，默认30S，生产环境中建议使用默认值
+#    lease-renewal-interval-in-seconds: 5
+#    配置Eureka服务端至上次收到Eureka客户端的心跳之后，等待下一次心跳的超时时间，若超过这个时间，则移除该Eureka客户端实例，默认90S，生产环境中建议使用默认值
+#    lease-expiration-duration-in-seconds: 15
+############################################# Eureka Configuration End ##################################################
+#########################################################################################################################

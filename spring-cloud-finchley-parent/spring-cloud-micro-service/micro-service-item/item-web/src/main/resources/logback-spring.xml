@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--scan:当配置文件发生变化时，是否重新加载，默认true-->
+<!--scanPeriod:监测配置文件是否发生变化的间隔时间，当scan属性等于true时生效，默认60秒-->
+<!--debug:是否输出logback内部日志，默认false-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--导入默认配置-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!--获取配置文件属性值-->
+    <springProperty scope="context" name="springApplicationName" source="spring.application.name"/>
+
+    <!--定义变量-->
+    <property name="LOG_FILE" value="${BUILD_FOLDER:-build}/${springApplicationName}"/>
+
+    <!--使用defaults.xml中的配置-->
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN}"/>
+    <property name="FIlE_LOG_PATTERN" value="${FILE_LOG_PATTERN}"/>
+
+    <!--上下文名称-->
+    <contextName>${springApplicationName}</contextName>
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>${LOG_FILE}.log</file>
+        <!--日志文件切割规则-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!--最大保留天数-->
+            <maxHistory>7</maxHistory>
+            <!--活动文件最大大小，默认10MB-->
+            <!--<maxFileSize>10MB</maxFileSize>-->
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FIlE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出Sleuth日志到JSON文件供Logstash使用-->
+    <appender name="logstash" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.json.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "severity": "%level",
+                        "service": "${springApplicationName:-}",
+                        "trace": "%X{X-B3-TraceId:-}",
+                        "span": "%X{X-B3-SpanId:-}",
+                        "parent": "%X{X-B3-ParentSpanId:-}",
+                        "exportable": "%X{X-Span-Export:-}",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "rest": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+    <!--指定包或类名进行细粒度配置-->
+    <!--additivity:是否向上级传递日志信息-->
+    <logger name="org.springframework.cloud.sleuth" level="DEBUG" additivity="false">
+        <appender-ref ref="logstash"/>
+    </logger>
+
+    <!-- 多环境日志配置，需要以logback-spring.xml命名并通过spring.profiles.active=prod方式指定环境 -->
+    <!--<springProfile name="dev">-->
+    <!--<root level="DEBUG">-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
+    <!--</springProfile>-->
+    <!--<springProfile name="test">-->
+    <!--<root level="INFO">-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
+    <!--</springProfile>-->
+</configuration>

@@ -1,0 +1,65 @@
+#########################################################################################################################
+############################################# Basic Configuration Begin #################################################
+spring:
+#  为Eureka服务端的Basic认证设置用户名与密码，需引入spring-security依赖
+  security:
+    user:
+      name: eureka
+      password: 123456
+  profiles:
+#    单节点直接使用standalone启动Eureka Server
+#    三节点集群需要在hosts文件中追加“127.0.0.1 cluster1 cluster2 cluster3”，并分别使用cluster1、cluster2、cluster3启动三个Eureka Server
+#    多节点相互注册可实现Eureka服务端高可用，并且在未启动所有节点之前，控制台抛出"Cannot execute request on any known server"异常是正常的
+    active: standalone
+#    active: cluster1
+#    active: cluster2
+#    active: cluster3
+############################################# Basic Configuration End ###################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Actuator Configuration Begin ##############################################
+management:
+  endpoints:
+    web:
+      exposure:
+#        允许所有端点访问，在生产环境中需更细粒度的配置
+        include: "*"
+  endpoint:
+    health:
+#      显示详细的监控信息，取值选项：NEVER，WHEN_AUTHORIZED，ALWAYS
+      show-details: ALWAYS
+############################################# Actuator Configuration End ################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Eureka Configuration Begin ################################################
+eureka:
+  dashboard:
+#    配置Eureka主页地址，默认"/"
+#    path: /
+  instance:
+#    配置Eureka客户端实例ID，这里设置为ip:port
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+#    是否使用IP设置hostName属性，若设置为true会导致集群环境下分片出现unavailable-replicas的情况
+#    prefer-ip-address: true
+#    配置Eureka客户端实例发送给Eureka服务端的心跳频率，默认30S，生产环境中建议使用默认值
+#    lease-renewal-interval-in-seconds: 5
+#    配置Eureka服务端至上次收到Eureka客户端的心跳之后，等待下一次心跳的超时时间，若超过这个时间，则移除该Eureka客户端实例，默认90S，生产环境中建议使用默认值
+#    lease-expiration-duration-in-seconds: 15
+  client:
+#    增加actuator健康检查，需要引入actuator依赖
+    healthcheck:
+      enabled: true
+  server:
+#    关闭Eureka自我保护，默认true，生产环境中建议使用默认值
+#    enable-self-preservation: false
+#    清理失效服务时间间隔，默认60000MS，生产环境中建议使用默认值
+#    eviction-interval-timer-in-ms: 10000
+#    当注册表信息被改变时，则其被保存在缓存中不失效的时间，默认180S，生产环境中建议使用默认值
+#    response-cache-auto-expiration-in-seconds: 30
+#    自我保护阈值，默认0.85，生产环境中建议使用默认值
+    renewal-percent-threshold: 0.49
+############################################# Eureka Configuration End ##################################################
+#########################################################################################################################
+

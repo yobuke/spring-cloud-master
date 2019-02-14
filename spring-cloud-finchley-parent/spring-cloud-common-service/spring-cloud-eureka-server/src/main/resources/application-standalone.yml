@@ -1,0 +1,16 @@
+server:
+  port: 8761
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
+#    是否注册到Eureka服务端，单节点Eureka服务端没有注册的必要，若高可用环境则需要设置为true
+    register-with-eureka: false
+#    是否从Eureka服务端获取注册信息，单节点Eureka服务端不需要获取，若高可用环境则需要设置为true
+    fetch-registry: false
+  instance:
+    hostname: localhost
+#    配置Eureka客户端实例发送给Eureka服务端的心跳频率，默认30S，生产环境中建议使用默认值
+#    lease-renewal-interval-in-seconds: 5
+#    配置Eureka服务端至上次收到Eureka客户端的心跳之后，等待下一次心跳的超时时间，若超过这个时间，则移除该Eureka客户端实例，默认90S，生产环境中建议使用默认值
+#    lease-expiration-duration-in-seconds: 15

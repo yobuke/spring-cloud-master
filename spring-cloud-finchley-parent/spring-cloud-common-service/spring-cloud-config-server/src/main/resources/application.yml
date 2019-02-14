@@ -1,0 +1,110 @@
+#########################################################################################################################
+############################################# Basic Configuration Begin #################################################
+server:
+  port: 2000
+spring:
+  cloud:
+    config:
+#      仓库分支
+      label: master
+      server:
+        git:
+#          仓库地址，由于Config会Clone整个仓库，所以建议配置文件仓库应该使用独立的仓库进行存放。
+          uri: git@github.com:nickzxing/spring-cloud-config-repo.git
+#          在项目启动前先加载配置
+          clone-on-start: true
+          ignore-local-ssh-settings: true
+          private-key: |
+                          -----BEGIN RSA PRIVATE KEY-----
+                          MIIEpAIBAAKCAQEAvHNcRbQQ2dTuF1dOwR6yOPES9rMnI0jHwmXRDkPlKTgwZ5/Y
+                          jE8GZS4YFQXUvV2GhjUNN5HOxppjZ1z/i/cVMo1cuv2j3N1oFyZsq6oYf64D5ypO
+                          nIGFxIjYdrGEbOr3hSi3nsvWtA7dZG2Y7C6u7jgnf8N7H5jEK4kVdesGqBzypaix
+                          mfO6UhcDb1kSLIOSg2pXi92t1ploVFP7paSje1MXemA9P4QAutvewV6xLykzqo+d
+                          NSDX7Dqyw8o/ud46uhk/ufSvPcV8z54Mc1xlcyPHLC+lfntIhCOLYZUDwxSomcmY
+                          ZnkFgRxi2ytWHKwBnPVksQ3N4TMqZ17hRQ7oDQIDAQABAoIBAF6XiTlzqQGuX9RX
+                          frBxOARc/afXRU3wulRZxxXh/qUyDxn0oj3LbOpcuLnUs3RZ/axf9MJv7drCpCK+
+                          C4e1/m3hhypVJms2t4jnQKTqPGHadxsRoWPtn7eG+SCa+l2xk4zDY2fR6XN4Aqjm
+                          WlwzEpuAlFMNTEAP7mfr51nJHw5CnP0o+baDba/XrCBn2ren55p0v/2/vOuYDcnc
+                          hEJKa1olCVeqjodjhEn42h80puPMQsOR/Hmx+1mjIfqdZdHpDJa5995QbfkSoLA4
+                          fwMm+SiqT1v6ThZ9N92LMkFp/VEZ5DhAgelR2spEjca+vJ964FrDIDIjucMDJ2qJ
+                          JfDG0AECgYEA4DWI1wv90LFaXJT2EjOEC7Qf+m8+ZYq+t63c/yJPEXe3gEcCRMjX
+                          6yYR/UH80/dz5XBnCUyzGwx/sB32rHRIypFYcNuHCCQdqRuo/CWyAphCCwBqSBja
+                          yl/O7Jm/vePT2IyW2d5tBx9tJZBbvVgf4MUuQupDQRG84Vd/YlLVWOkCgYEA1yvY
+                          NHUUgqExehb+bkunoDEvwtHqh7XG0cGHT/JJQwl09tpPOtBuPBNREh6lDdYwheLW
+                          Zf76Rj8ep8U1cImzlQRYGmJZIwq1km+HH8blL28GpzQppPxzDt4Uvw5WR2eKHBzZ
+                          o0+c5UKPrMS8pPvlx4XSIN0sUzuQWiNq0qqnn4UCgYEAy8udcGrz8KfkjNbRvMWa
+                          ttCpaIeJXd75cBfXEwlqeWQqJa1lwIQWzyUxoNRELZ91dw3ueiN/gYyg28LAnwyr
+                          xYTLsPm6CYpac4Yy2c6huX4QOdPMx2/gH6dqfOFbygy2WNWhoLNuwtSr70MCQF9D
+                          ypkwbZ5mN1UaLHHN1d+ZEVECgYAls3X3gwgr90hvBvZfpvvg8p1Wumcoji4e9JTb
+                          6izyBQcsdYXqXTjjZ9MNpLbw3LW1z9AXIP0DL+4UIVbCuC3yD0fMn6zUmfzEgqwf
+                          Yj8n94En7NjbIqyaT0k9TKrLahXl5RwxJDLubKI1+GbBVa2mLwlpXrd0gfxB/vCp
+                          puMl7QKBgQDXyEnbkcl1kBA/vgwszJqy2KIBoyvCtJeW6FyLUGLrOCM3p54qCVQk
+                          w2glOnThDdQhzmn2L4x7TKRbKwgmvcXlqSnRrW+MpQ5MfWlOUZz3eJIqdLzyXnUK
+                          TN+SP3bO8XY1waSuQ00NGx5VFLyseXhmM8bUAgx33UMGmXgoz3vHjQ==
+                          -----END RSA PRIVATE KEY-----
+#          使用用户名密码连接github
+#          uri: https://github.com/nickzxing/spring-cloud-config-repo.git
+#          输入已有的用户名
+#          username:
+#          输入已有的密码
+#          password:
+#          跳过SSL验证，当网站没有配置SSL证书时必须将该配置设置为true
+#          skip-ssl-validation: true
+#          下载目录
+#          basedir:
+#          搜索子项目，并从中找配置文件。
+#          search-paths: '*repo'
+#          连接仓库超时时间，默认5秒
+#          timeout: 5
+    stream:
+      kafka:
+        binder:
+#          配置kafka服务端列表，集群环境下以逗号分隔，默认为localhost
+          brokers: localhost
+#          配置kafka服务端默认端口，当brokers属性中没有配置端口信息时，就会使用defaultBrokerPort配置的端口值，默认为9092
+          defaultBrokerPort: 9092
+    bus:
+      trace:
+#        启用跟踪总线事件
+        enabled: true
+############################################# Basic Configuration End ###################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Actuator Configuration Begin ##############################################
+management:
+  endpoints:
+    web:
+      exposure:
+#        允许所有端点访问，在生产环境中需更细粒度的配置
+        include: "*"
+  endpoint:
+    health:
+#      显示详细的监控信息，取值选项：NEVER，WHEN_AUTHORIZED，ALWAYS
+      show-details: ALWAYS
+############################################# Actuator Configuration End ################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Eureka Configuration Begin ################################################
+eureka:
+  client:
+    service-url:
+#      配置Eureka服务端地址并注册，若服务端是高可用环境，需要配置多个服务端地址并使用逗号分隔
+      defaultZone: http://eureka:123456@localhost:8761/eureka/
+    healthcheck:
+#    增加actuator健康检查，需要引入actuator依赖
+      enabled: true
+  instance:
+#    配置Eureka客户端实例ID，这里设置为ip:port
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+#    是否使用IP设置hostName属性
+#    prefer-ip-address: true
+#    状态页面的URL，相对路径，默认使用HTTP访问，如果需要使用HTTPS则需要使用绝对路径配置（eureka.instance.status-page-url）
+#    status-page-url-path: /
+#    配置Eureka客户端实例发送给Eureka服务端的心跳频率，默认30S，生产环境中建议使用默认值
+#    lease-renewal-interval-in-seconds: 5
+#    配置Eureka服务端至上次收到Eureka客户端的心跳之后，等待下一次心跳的超时时间，若超过这个时间，则移除该Eureka客户端实例，默认90S，生产环境中建议使用默认值
+#    lease-expiration-duration-in-seconds: 15
+############################################# Eureka Configuration End ##################################################
+#########################################################################################################################

@@ -1,0 +1,69 @@
+#########################################################################################################################
+############################################# Basic Configuration Begin #################################################
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+#      禁用gateway
+#      enabled: false
+#      此路由配置访问地址为：http://${IP}:${PORT}/eureka-client/openapi/${微服务的API地址}
+      routes:
+#        唯一ID
+      - id: user-web
+#        lb://${EurekaServiceID}表示路由到注册中心的服务，ws://表示websocket路由，gateway支持长连接
+        uri: lb://user-web
+#        路由地址
+        predicates:
+        - Path=/user/openapi/**
+        filters:
+#        除去前缀的长度，以/分隔，在这里等于除去了/eureka-client/openapi
+        - StripPrefix=2
+#        添加前缀
+#        - PrefixPath=
+      discovery:
+        locator:
+#          服务名称转小写
+          enabled: true
+          lower-case-service-id: true
+############################################# Basic Configuration End ###################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Actuator Configuration Begin ##############################################
+management:
+  endpoints:
+    web:
+      exposure:
+#        允许所有端点访问，在生产环境中需更细粒度的配置
+        include: "*"
+  endpoint:
+    health:
+#      显示详细的监控信息，取值选项：NEVER，WHEN_AUTHORIZED，ALWAYS
+      show-details: ALWAYS
+############################################# Actuator Configuration End ################################################
+#########################################################################################################################
+
+#########################################################################################################################
+############################################# Eureka Configuration Begin ################################################
+eureka:
+  client:
+    service-url:
+#      配置Eureka服务端地址并注册，若服务端是高可用环境，需要配置多个服务端地址并使用逗号分隔
+      defaultZone: http://eureka:123456@localhost:8761/eureka/
+    healthcheck:
+#    增加actuator健康检查，需要引入actuator依赖
+      enabled: true
+  instance:
+#    配置Eureka客户端实例ID，这里设置为ip:port
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+#    是否使用IP设置hostName属性
+#    prefer-ip-address: true
+#    状态页面的URL，相对路径，默认使用HTTP访问，如果需要使用HTTPS则需要使用绝对路径配置（eureka.instance.status-page-url）
+#    status-page-url-path: /
+#    配置Eureka客户端实例发送给Eureka服务端的心跳频率，默认30S，生产环境中建议使用默认值
+#    lease-renewal-interval-in-seconds: 5
+#    配置Eureka服务端至上次收到Eureka客户端的心跳之后，等待下一次心跳的超时时间，若超过这个时间，则移除该Eureka客户端实例，默认90S，生产环境中建议使用默认值
+#    lease-expiration-duration-in-seconds: 15
+############################################# Eureka Configuration End ##################################################
+#########################################################################################################################
