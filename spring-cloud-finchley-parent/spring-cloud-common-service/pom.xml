@@ -13,7 +13,7 @@
     <modules>
         <module>spring-cloud-eureka-server</module>
         <module>spring-cloud-gateway</module>
-        <module>spring-cloud-config-server</module>
+        <!--<module>spring-cloud-config-server</module>-->
         <module>spring-cloud-admin-server</module>
     </modules>
 </project>
