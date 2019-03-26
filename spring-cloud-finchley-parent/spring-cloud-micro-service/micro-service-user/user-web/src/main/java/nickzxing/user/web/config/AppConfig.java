@@ -9,7 +9,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author ivanyu
  */
 @Configuration
-@EnableApolloConfig(value = {"application"}, order = 1)
+@EnableApolloConfig(value = {"application.yml"}, order = 1)
 public class AppConfig {
     /**
      * Spring Validation 开启方法级别验证
