@@ -12,17 +12,17 @@ spring:
 
 #########################################################################################################################
 ############################################# Config Configuration Begin ################################################
-    config:
-#      对应config server所获取的配置文件的{profile}，（default、dev、prod）
-      profile:
-#      仓库分支
-      label: master
-#      对应config server所获取的配置文件的{application}，使用逗号分隔可加载多个配置文件
-      name: common,eureka
-#      通过Eureka服务实例名查找config server
-      discovery:
-        enabled: true
-        service-id: config-server
+#    config:
+##      对应config server所获取的配置文件的{profile}，（default、dev、prod）
+#      profile:
+##      仓库分支
+#      label: master
+##      对应config server所获取的配置文件的{application}，使用逗号分隔可加载多个配置文件
+#      name: common,eureka
+##      通过Eureka服务实例名查找config server
+#      discovery:
+#        enabled: true
+#        service-id: config-server
 ############################################# Config Configuration End ##################################################
 #########################################################################################################################
 
