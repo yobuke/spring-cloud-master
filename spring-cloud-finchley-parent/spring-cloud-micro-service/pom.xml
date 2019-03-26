@@ -18,11 +18,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>1.3.0</version>
-            </dependency>
-            <dependency>
                 <groupId>nickzxing.spring.cloud</groupId>
                 <artifactId>user-api</artifactId>
                 <version>${project.version}</version>

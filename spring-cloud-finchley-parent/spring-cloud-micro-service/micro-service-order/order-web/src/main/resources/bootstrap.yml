@@ -1,3 +1,8 @@
+app:
+  id: micro-service-order
+apollo:
+  meta: http://127.0.0.1:8080
+  cluster: default
 spring:
   application:
 #    由于logback-spring.xml的加载在application.yml之前bootstrap.xml之后

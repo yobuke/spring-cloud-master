@@ -26,6 +26,7 @@
         <logstash.version>4.11</logstash.version>
         <fastjson.version>1.2.48</fastjson.version>
         <lombok.version>1.16.18</lombok.version>
+        <apollo.version>1.3.0</apollo.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -55,6 +56,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
