@@ -1,7 +1,7 @@
 #########################################################################################################################
 ############################################# Basic Configuration Begin #################################################
 server:
-  port: 8080
+  port: 80
 spring:
   cloud:
     gateway:
@@ -12,7 +12,8 @@ spring:
 #        唯一ID
       - id: user-web
 #        lb://${EurekaServiceID}表示路由到注册中心的服务，ws://表示websocket路由，gateway支持长连接
-        uri: lb://user-web
+#        uri: lb://user-web
+        uri: lb://MICRO-SERVICE-USER
 #        路由地址
         predicates:
         - Path=/user/openapi/**
