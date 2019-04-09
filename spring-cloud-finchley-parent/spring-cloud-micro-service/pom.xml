@@ -14,6 +14,7 @@
         <module>micro-service-user</module>
         <module>micro-service-order</module>
         <module>micro-service-item</module>
+        <module>micro-service-pay-dubbo</module>
         <!--<module>../../../whale/common-java/apollo-client</module>-->
         <module>../../../whale/common-java/distributed-context</module>
     </modules>
