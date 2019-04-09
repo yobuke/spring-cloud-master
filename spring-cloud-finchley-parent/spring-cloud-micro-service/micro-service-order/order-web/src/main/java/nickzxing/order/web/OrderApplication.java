@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 /**
  * @author NickZxing
@@ -15,6 +17,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @EnableFeignClients(basePackages = "nickzxing.order.web.feign.client")
+@ComponentScans(value = {@ComponentScan(value = "nickzxing.order.web.config"),
+        @ComponentScan(value = "uyun.whale.common.distributedcontext.config")})
+
 public class OrderApplication {
 
     public static void main(String[] args) {

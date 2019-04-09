@@ -6,13 +6,12 @@ import nickzxing.user.api.pojo.query.UserQuery;
 import nickzxing.user.api.pojo.vo.UserVO;
 import nickzxing.user.web.service.UserService;
 import nickzxing.user.web.util.CopyUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uyun.whale.common.distributedcontext.context.DistributedContextHolder;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author NickZxing
@@ -26,6 +25,13 @@ public class UserController implements UserAPI {
     UserService userService;
 
     public UserVO getById(Long id) {
+        String orderId = String.valueOf(DistributedContextHolder.getAttribute("orderId"));
+        System.out.println("user service host:" + orderId);
+        final Map attributeNames = DistributedContextHolder.getAttributeAll();
+        System.out.println("user service attributeNames:" + attributeNames);
+        DistributedContextHolder.setAttribute("userid", "10086");
+        System.out.println("user service userid:" + DistributedContextHolder.getAttribute("userid"));
+
         return CopyUtils.copyBean(userService.getById(id), UserVO.class);
     }
 

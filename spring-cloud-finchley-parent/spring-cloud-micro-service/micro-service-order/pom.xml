@@ -17,6 +17,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>uyun.whale</groupId>
+                <artifactId>common-distributed-context</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
                 <groupId>nickzxing.spring.cloud</groupId>
                 <artifactId>order-api</artifactId>
                 <version>${project.version}</version>

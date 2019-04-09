@@ -8,6 +8,7 @@ import nickzxing.order.web.util.CopyUtils;
 import nickzxing.user.api.pojo.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uyun.whale.common.distributedcontext.context.DistributedContextHolder;
 
 import java.util.List;
 
@@ -34,6 +35,16 @@ public class OrderController implements OrderAPI {
      */
     @Override
     public List<OrderVO> getByUserId(Long userId) throws Exception {
+        DistributedContextHolder.setAttribute("test-order", "20190909");
+        DistributedContextHolder.setAttribute("test-number", 2721361);
+        DistributedContextHolder.setAttribute("test-bool", true);
+        UserVO u = new UserVO();
+        u.setId(001);
+        u.setUsername("zhili");
+        DistributedContextHolder.setAttribute("test-ojb", u);
+        System.out.println("order service orderId:" + DistributedContextHolder.getAttribute("orderId"));
+
+
         //通过Feign调用用户微服务接口并获取用户信息
         UserVO userVO = userFeignClient.getById(userId);
         if (null == userVO) {
