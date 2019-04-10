@@ -35,7 +35,7 @@
     <bean id="helloService" class="com.example.microservicepaydubbo.service.hello.HelloServiceImpl"/>
 
     <!-- declare the service interface to be exported -->
-    <dubbo:service interface="com.example.microservicepaydubbo.api.HelloService" ref="helloService"/>
+    <dubbo:service interface="com.example.microservicepaydubbo.api.HelloService" ref="helloService" filter="tracing"/>
 
     <!-- zipkin configuration -->
     <bean id="sender" class="zipkin2.reporter.beans.OkHttpSenderFactoryBean">
